@@ -1,0 +1,9 @@
+.form-control:focus{
+    border:  0.1rem solid #00695c;
+    box-shadow:none;
+
+}
+
+input.invalid{
+    border:0.1rem solid red;
+}

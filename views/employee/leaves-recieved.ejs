@@ -1,0 +1,86 @@
+<%- include("../includes/start.ejs")%>
+</head>
+<body>
+<%-include("../includes/navigation.ejs")%>
+
+<div class="container">
+    <br>
+    <br>
+    <br>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Leave Type</th>
+            <th scope="col">Visiting place</th>
+            <th scope="col">Email</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <%
+            let i=1;
+            for (let employee of employees) {
+                for (let leave of employee.leaves) {
+                    if (leave.leaveStatus=="Not accepted"){
+        %>
+
+            <tr>
+                <th scope="row"><%= i%></th>
+                <td><%= employee.name%></td>
+                <td><%= leave.leaveType%></td>
+                <td><%= leave.visitingPlace%></td>
+                <td><%= employee.email%></td>
+                <td>
+                    <button class="btn btn-sm" data-toggle="collapse" data-target="#details<%= i%>">
+                        <i class="fas fa-caret-down"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="5">
+                    <div class="collapse" id="details<%= i%>">
+                        <ul class="list-group">
+                            <li class="list-group-item m-auto w-50 text-center">
+                                <span class="mr-5 font-weight-bold">Start Date:</span>
+                                <%= leave.startDate.toDateString()%>
+                            </li>
+                            <li class="list-group-item m-auto w-50 text-center">
+                                <span class="mr-5 font-weight-bold">End Date:</span>
+                                <%= leave.endDate.toDateString()%>
+                            </li>
+                            <li class="list-group-item m-auto w-50 text-center">
+                                <span class="mr-5 font-weight-bold">Leave Message:</span>
+                                <%= leave.leaveMessage%>
+                            </li>
+                            <li class="list-group-item m-auto w-50 text-center">
+                                <form action="/response?status=approved" method="post">
+                                    <input type="hidden" name="leaveId" value="<%= leave._id%>">
+                                    <button class="btn btn-sm">
+                                        Approve
+                                    </button>
+                                </form>
+                                <form action="/response?status=rejected" method="post">
+                                    <input type="hidden" name="leaveId" value="<%= leave._id%>">
+                                    <button class="btn btn-sm">
+                                        Reject
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+
+        <%
+            ++i;
+        }
+    }
+}
+        %>
+
+        </tbody>
+    </table>
+</div>
+<%-include("../includes/end.ejs")%>
